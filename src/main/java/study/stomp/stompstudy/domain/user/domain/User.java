@@ -12,6 +12,8 @@ import study.stomp.stompstudy.domain.model.BaseModel;
 import study.stomp.stompstudy.domain.model.RoleType;
 import study.stomp.stompstudy.domain.user.dto.request.UserCreateRequest;
 
+import java.time.LocalDateTime;
+
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Document(collection = "users")
@@ -23,7 +25,6 @@ public class User extends BaseModel {
     @Id
     private Long userId;
 
-    @Field
     @Indexed(unique = true)
     private String loginId;
 
@@ -40,7 +41,7 @@ public class User extends BaseModel {
     private String password;
 
     @Field
-    private boolean isDeleted = Boolean.FALSE;
+    private Boolean isDeleted = Boolean.FALSE;
 
     @Field
     private RoleType roleType;
@@ -60,6 +61,8 @@ public class User extends BaseModel {
         this.profileImg = request.getProfileImg();
         this.password = request.getPassword();
         this.roleType = RoleType.USER;
+        this.setCreatedAt(LocalDateTime.now());
+        this.setModifiedAt(LocalDateTime.now());
     }
 
     public void generateSequence(Long userId){

@@ -27,6 +27,11 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException, java.io.IOException {
+        if(shouldNotFilter(request)){
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         String accessToken = jwtProvider.resolveAccessToken(request);
 
         if(!StringUtils.hasText(accessToken)){

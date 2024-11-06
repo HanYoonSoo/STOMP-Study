@@ -5,6 +5,7 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import study.stomp.stompstudy.domain.user.exception.UserException;
 import study.stomp.stompstudy.global.common.dto.response.ErrorResponseDto;
 import study.stomp.stompstudy.global.exception.Code;
 import study.stomp.stompstudy.global.exception.GlobalException;
@@ -17,7 +18,13 @@ public class StompExceptionHandler {
 
     @ExceptionHandler(GlobalException.class)
     protected ErrorResponseDto handleGlobalException(GlobalException e){
-        log.error("GlobalException: {}", e.getErrorCode().getMessage());
+        log.error("GlobalException: {}, detail: {}", e.getErrorCode().getMessage(), e.getMessage());
+        return ErrorResponseDto.of(e.getErrorCode(), e.getMessage());
+    }
+
+    @ExceptionHandler(UserException.class)
+    protected ErrorResponseDto handleUserException(UserException e){
+        log.error("GlobalException: {}, detail: {}", e.getErrorCode().getMessage(), e.getMessage());
         return ErrorResponseDto.of(e.getErrorCode(), e.getMessage());
     }
 

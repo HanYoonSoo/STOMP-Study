@@ -15,7 +15,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
-@EnableMongoAuditing
+//@EnableMongoAuditing
 @EnableTransactionManagement
 public class MongoConfig extends AbstractMongoClientConfiguration {
 
@@ -49,4 +49,5 @@ public class MongoConfig extends AbstractMongoClientConfiguration {
     protected String getDatabaseName(){
         return databaseName;
     }
+
 }

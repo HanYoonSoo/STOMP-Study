@@ -1,6 +1,5 @@
 package study.stomp.stompstudy.global.security.jwt;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
@@ -18,7 +17,6 @@ import study.stomp.stompstudy.domain.model.RoleType;
 import study.stomp.stompstudy.global.common.dto.security.TokenDto;
 import study.stomp.stompstudy.global.common.enums.ExpiredTimeEnum;
 import study.stomp.stompstudy.global.exception.Code;
-import study.stomp.stompstudy.global.exception.GlobalException;
 import study.stomp.stompstudy.global.exception.JwtException;
 import study.stomp.stompstudy.global.security.custom.CustomUserDetails;
 
@@ -36,7 +34,7 @@ public class JwtProvider {
     public static final String AUTHORIZATION_HEADER = "Authorization";
     public static final String REFRESH_HEADER = "Refresh";
     public static final String BEARER_PREFIX = "Bearer ";
-    private static final String AUTHORITIES_KEY = "stomp";
+    private static final String AUTHORITIES_KEY = "auth";
 
     private final SecretKey secretKey;
 
