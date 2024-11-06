@@ -5,7 +5,7 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import study.stomp.stompstudy.global.common.dto.ErrorResponseDto;
+import study.stomp.stompstudy.global.common.dto.response.ErrorResponseDto;
 import study.stomp.stompstudy.global.exception.Code;
 import study.stomp.stompstudy.global.exception.GlobalException;
 

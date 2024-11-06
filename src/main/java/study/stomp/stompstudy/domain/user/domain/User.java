@@ -13,7 +13,7 @@ import study.stomp.stompstudy.domain.model.RoleType;
 import study.stomp.stompstudy.domain.user.dto.request.UserCreateRequest;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PACKAGE)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Document(collection = "users")
 public class User extends BaseModel {
 
@@ -44,9 +44,6 @@ public class User extends BaseModel {
 
     @Field
     private RoleType roleType;
-
-
-
 
     public static User from(UserCreateRequest request) {
         User user = new User();

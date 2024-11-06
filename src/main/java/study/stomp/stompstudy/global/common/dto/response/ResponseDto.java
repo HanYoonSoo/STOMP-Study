@@ -1,4 +1,4 @@
-package study.stomp.stompstudy.global.common.dto;
+package study.stomp.stompstudy.global.common.dto.response;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
