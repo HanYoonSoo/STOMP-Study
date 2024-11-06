@@ -18,7 +18,7 @@ public class DataResponseDto<T> extends ResponseDto {
         this.data = data;
     }
 
-    public static <T> DataResponseDto<T> of(T data) {
+    public static <T> DataResponseDto<T> from(T data) {
         return new DataResponseDto<>(data);
     }
 

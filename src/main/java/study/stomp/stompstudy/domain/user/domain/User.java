@@ -10,6 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import study.stomp.stompstudy.domain.model.BaseModel;
 import study.stomp.stompstudy.domain.model.RoleType;
+import study.stomp.stompstudy.domain.user.dto.request.UserCreateRequest;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
@@ -45,4 +46,26 @@ public class User extends BaseModel {
     private RoleType roleType;
 
 
+
+
+    public static User from(UserCreateRequest request) {
+        User user = new User();
+
+        user.modifyUser(request);
+
+        return  user;
+    }
+
+    private void modifyUser(UserCreateRequest request) {
+        this.loginId = request.getLoginId();
+        this.nickName = request.getNickName();
+        this.name = request.getName();
+        this.profileImg = request.getProfileImg();
+        this.password = request.getPassword();
+        this.roleType = RoleType.USER;
+    }
+
+    public void generateSequence(Long userId){
+        this.userId = userId;
+    }
 }
