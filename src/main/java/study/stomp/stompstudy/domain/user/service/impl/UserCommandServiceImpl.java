@@ -13,6 +13,8 @@ import study.stomp.stompstudy.domain.user.service.UserCommandService;
 import study.stomp.stompstudy.global.exception.Code;
 import study.stomp.stompstudy.global.utils.SequenceGenerator;
 
+import java.util.List;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -37,6 +39,24 @@ public class UserCommandServiceImpl implements UserCommandService {
 
         return UserInfoResponse.from(user);
     }
+
+    @Override
+    public void addChatRoom(List<String> loginIds, Long chatId) {
+        for(String loginId : loginIds){
+            addChatRoomToUser(loginId, chatId);
+        }
+
+    }
+
+    private void addChatRoomToUser(String loginId, Long chatId){
+        User user = userRepository.findByLoginId(loginId)
+                .orElseThrow(() -> new UserException(Code.NOT_FOUND, "User Not Found"));
+
+        user.getChatIds().add(chatId);
+
+        userRepository.save(user);
+    }
+
 
     private void validateLoginId(String loginId) {
         if(userRepository.existsByLoginIdAndIsDeletedFalse(loginId))

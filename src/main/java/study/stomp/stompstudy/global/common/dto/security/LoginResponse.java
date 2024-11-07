@@ -12,11 +12,8 @@ public class LoginResponse{
 
     private Long userId;
     private String loginId;
-    private String email;
     private String nickName;
     private String profileImg;
-    private Boolean isRqPwChange;
-    private String urlName;
 
     public static LoginResponse from(CustomUserDetails customUserDetails){
         return LoginResponse.builder()

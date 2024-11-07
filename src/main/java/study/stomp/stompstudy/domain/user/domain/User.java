@@ -13,6 +13,8 @@ import study.stomp.stompstudy.domain.model.RoleType;
 import study.stomp.stompstudy.domain.user.dto.request.UserCreateRequest;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -45,6 +47,10 @@ public class User extends BaseModel {
 
     @Field
     private RoleType roleType;
+
+    @Field
+    private List<Long> chatIds = new ArrayList<>();
+
 
     public static User from(UserCreateRequest request) {
         User user = new User();
