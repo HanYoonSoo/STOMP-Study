@@ -14,7 +14,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import study.stomp.stompstudy.global.common.service.RedisService;
 import study.stomp.stompstudy.global.exception.Code;
 import study.stomp.stompstudy.global.exception.JwtException;
-import study.stomp.stompstudy.global.utils.UrlUtils;
+import study.stomp.stompstudy.global.utils.UrlUtil;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -68,6 +68,6 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         String servletPath = request.getServletPath();
-        return UrlUtils.EXCLUDE_URLS.stream().anyMatch(servletPath::startsWith);
+        return UrlUtil.EXCLUDE_URLS.stream().anyMatch(servletPath::startsWith);
     }
 }

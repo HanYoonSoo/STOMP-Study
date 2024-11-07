@@ -29,11 +29,8 @@ public class UserCommandServiceImpl implements UserCommandService {
         validateLoginId(request.getLoginId());
 
         request.modifyPassword(passwordEncoder.encode(request.getPassword()));
-
         User user = User.from(request);
-
         user.generateSequence(sequenceGenerator.generateSequence(User.SEQUENCE_NAME));
-
 
         userRepository.save(user);
 
@@ -41,16 +38,16 @@ public class UserCommandServiceImpl implements UserCommandService {
     }
 
     @Override
-    public void addChatRoom(List<String> loginIds, Long chatId) {
-        for(String loginId : loginIds){
-            addChatRoomToUser(loginId, chatId);
+    public void addChatRoom(List<String> userCodes, Long chatId) {
+        for(String userCode : userCodes){
+            addChatRoomToUser(userCode, chatId);
         }
 
     }
 
-    private void addChatRoomToUser(String loginId, Long chatId){
-        User user = userRepository.findByLoginId(loginId)
-                .orElseThrow(() -> new UserException(Code.NOT_FOUND, "User Not Found"));
+    private void addChatRoomToUser(String userCode, Long chatId){
+        User user = userRepository.findByUserCode(userCode)
+                .orElseThrow(() -> new UserException(Code.NOT_FOUND, "UserCode Not Found"));
 
         user.getChatIds().add(chatId);
 

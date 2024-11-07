@@ -29,7 +29,7 @@ public class NormalCommandServiceImpl implements NormalCommandService {
 
         normal.generateSequence(sequenceGenerator.generateSequence(Normal.SEQUENCE_NAME));
 
-        userCommandService.addChatRoom(request.getUserIds(), normal.getNormalId());
+        userCommandService.addChatRoom(request.getUserCodes(), normal.getNormalId());
 
         normalRepository.save(normal);
 

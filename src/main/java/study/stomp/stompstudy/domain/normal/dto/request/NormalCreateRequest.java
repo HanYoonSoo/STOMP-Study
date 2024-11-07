@@ -12,5 +12,5 @@ public class NormalCreateRequest {
     private String normalChatName;
 
     @NotNull
-    private List<String> userIds;
+    private List<String> userCodes;
 }

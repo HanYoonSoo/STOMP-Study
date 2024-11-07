@@ -9,5 +9,5 @@ public interface UserCommandService {
 
     UserInfoResponse save(UserCreateRequest request);
 
-    void addChatRoom(List<String> loginId, Long chatId);
+    void addChatRoom(List<String> userCodes, Long chatId);
 }

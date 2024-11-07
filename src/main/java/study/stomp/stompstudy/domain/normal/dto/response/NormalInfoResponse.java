@@ -19,7 +19,7 @@ public class NormalInfoResponse {
     public static NormalInfoResponse from(Normal normal) {
         return NormalInfoResponse.builder()
                 .normalChatName(normal.getNormalChatName())
-                .userIds(normal.getUserIds())
+                .userIds(normal.getUserCodes())
                 .build();
     }
 }

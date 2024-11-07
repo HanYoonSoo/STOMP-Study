@@ -11,6 +11,8 @@ import org.springframework.data.mongodb.core.mapping.Field;
 import study.stomp.stompstudy.domain.model.BaseModel;
 import study.stomp.stompstudy.domain.model.RoleType;
 import study.stomp.stompstudy.domain.user.dto.request.UserCreateRequest;
+import study.stomp.stompstudy.global.utils.RandomUtil;
+import study.stomp.stompstudy.global.utils.UUIDUtil;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -42,6 +44,9 @@ public class User extends BaseModel {
     @Field
     private String password;
 
+    @Indexed(unique = true)
+    private String userCode;
+
     @Field
     private Boolean isDeleted = Boolean.FALSE;
 
@@ -69,6 +74,7 @@ public class User extends BaseModel {
         this.roleType = RoleType.USER;
         this.setCreatedAt(LocalDateTime.now());
         this.setModifiedAt(LocalDateTime.now());
+        this.userCode = RandomUtil.generateRandomCode(12);
     }
 
     public void generateSequence(Long userId){

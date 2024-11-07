@@ -2,7 +2,7 @@ package study.stomp.stompstudy.global.utils;
 
 import java.util.List;
 
-public class UrlUtils {
+public class UrlUtil {
     public static final List<String> EXCLUDE_URLS = List.of(
             "/auth/login", "/docs/index.html",
             "/user/signup", "/auth/reissue"

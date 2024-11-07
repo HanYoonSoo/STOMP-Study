@@ -13,6 +13,9 @@ public interface UserRepository extends MongoRepository<User, Long> {
     @Query("{'loginId': ?0, 'isDeleted': false}")
     Optional<User> findByLoginId(String loginId);
 
+    @Query("{'userCode': ?0, 'isDeleted': false}")
+    Optional<User> findByUserCode(String userCode);
+
     boolean existsByLoginIdAndIsDeletedFalse(String loginId);
 
 }

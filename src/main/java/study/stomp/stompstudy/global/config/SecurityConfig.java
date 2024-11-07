@@ -11,8 +11,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.*;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -21,7 +19,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import study.stomp.stompstudy.global.common.service.RedisService;
 import study.stomp.stompstudy.global.security.custom.*;
 import study.stomp.stompstudy.global.security.jwt.*;
-import study.stomp.stompstudy.global.utils.UrlUtils;
+import study.stomp.stompstudy.global.utils.UrlUtil;
 
 import java.util.Collections;
 import java.util.List;
@@ -51,7 +49,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize ->
                         authorize
-                                .requestMatchers(UrlUtils.PERMITTED_URLS.toArray(new String[0])).permitAll()
+                                .requestMatchers(UrlUtil.PERMITTED_URLS.toArray(new String[0])).permitAll()
                                 .anyRequest().hasAnyRole("USER", "ADMIN")
                 );
 

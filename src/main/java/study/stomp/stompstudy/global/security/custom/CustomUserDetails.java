@@ -21,6 +21,7 @@ public class CustomUserDetails extends User implements UserDetails {
     private RoleType roleType;
     private String password;
     private String nickName;
+    private String userCode;
 
     private CustomUserDetails(User user){
         this.id = user.getUserId();
@@ -28,6 +29,7 @@ public class CustomUserDetails extends User implements UserDetails {
         this.password = user.getPassword();
         this.roleType = user.getRoleType();
         this.nickName = user.getNickName();
+        this.userCode = user.getUserCode();
     }
 
     private CustomUserDetails(String loginId, RoleType role){
