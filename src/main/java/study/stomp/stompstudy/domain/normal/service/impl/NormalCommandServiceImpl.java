@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import study.stomp.stompstudy.domain.normal.domain.Normal;
 import study.stomp.stompstudy.domain.normal.dto.request.NormalAddUserRequest;
 import study.stomp.stompstudy.domain.normal.dto.request.NormalCreateRequest;
+import study.stomp.stompstudy.domain.normal.dto.request.NormalModifyRequest;
 import study.stomp.stompstudy.domain.normal.dto.response.NormalInfoResponse;
 import study.stomp.stompstudy.domain.normal.exception.NormalException;
 import study.stomp.stompstudy.domain.normal.repository.NormalRepository;
@@ -26,7 +27,6 @@ public class NormalCommandServiceImpl implements NormalCommandService {
 
     private final SequenceGenerator sequenceGenerator;
     private final NormalRepository normalRepository;
-    private final UserCommandService userCommandService;
     private final UserRepository userRepository;
 
     @Override
@@ -40,6 +40,15 @@ public class NormalCommandServiceImpl implements NormalCommandService {
         normalRepository.save(normal);
 
         return NormalInfoResponse.from(normal);
+    }
+
+    @Override
+    public NormalInfoResponse modify(NormalModifyRequest request) {
+        Normal normal = validateNormal(request.getNormalId());
+
+        normal.modifyChatName(request.getNormalChatName());
+
+        return NormalInfoResponse.from(normalRepository.save(normal));
     }
 
     @Override

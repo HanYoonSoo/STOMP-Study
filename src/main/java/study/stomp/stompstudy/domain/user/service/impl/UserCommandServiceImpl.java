@@ -5,6 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import study.stomp.stompstudy.domain.normal.domain.Normal;
+import study.stomp.stompstudy.domain.normal.dto.request.NormalModifyRequest;
+import study.stomp.stompstudy.domain.normal.repository.NormalRepository;
 import study.stomp.stompstudy.domain.user.domain.User;
 import study.stomp.stompstudy.domain.user.dto.request.*;
 import study.stomp.stompstudy.domain.user.dto.response.UserInfoResponse;
@@ -25,6 +27,7 @@ public class UserCommandServiceImpl implements UserCommandService {
     private final SequenceGenerator sequenceGenerator;
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
+    private final NormalRepository normalRepository;
 
     @Override
     public UserInfoResponse save(UserCreateRequest request) {
@@ -80,7 +83,14 @@ public class UserCommandServiceImpl implements UserCommandService {
     @Override
     public void exitChatRoom(UserExitRequest request) {
         User user = validateUser(request.getUserId());
-        user.getChatIds().removeAll(request.getChatIds());
+
+        normalRepository.findAllById(request.getChatIds())
+                .forEach(normal -> {
+                    normal.removeUser(user);
+                    normalRepository.save(normal);
+                });
+
+        userRepository.save(user);
     }
 
     @Override
@@ -92,8 +102,6 @@ public class UserCommandServiceImpl implements UserCommandService {
             userRepository.save(user);
         }
     }
-
-
 
     private void existsLoginId(String loginId) {
         if(userRepository.existsByLoginIdAndIsDeletedFalse(loginId))

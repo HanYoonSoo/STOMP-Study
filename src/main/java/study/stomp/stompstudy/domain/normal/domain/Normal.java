@@ -8,6 +8,7 @@ import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Field;
 import study.stomp.stompstudy.domain.model.BaseModel;
 import study.stomp.stompstudy.domain.normal.dto.request.NormalCreateRequest;
+import study.stomp.stompstudy.domain.user.domain.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +44,18 @@ public class Normal extends BaseModel {
         this.normalChatName = request.getNormalChatName();
     }
 
+
+    public void modifyChatName(String normalChatName) {
+        this.normalChatName = normalChatName;
+    }
+
     public void generateSequence(Long normalId){
         this.normalId = normalId;
+    }
+
+
+    public void removeUser(User user) {
+        this.userIds.remove(user.getUserId());
+        user.getChatIds().remove(normalId);
     }
 }
