@@ -11,6 +11,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 import study.stomp.stompstudy.domain.model.BaseModel;
 import study.stomp.stompstudy.domain.model.RoleType;
 import study.stomp.stompstudy.domain.user.dto.request.UserCreateRequest;
+import study.stomp.stompstudy.domain.user.dto.request.UserModifyRequest;
 import study.stomp.stompstudy.global.utils.RandomUtil;
 import study.stomp.stompstudy.global.utils.UUIDUtil;
 
@@ -60,12 +61,12 @@ public class User extends BaseModel {
     public static User from(UserCreateRequest request) {
         User user = new User();
 
-        user.modifyUser(request);
+        user.initUser(request);
 
         return  user;
     }
 
-    private void modifyUser(UserCreateRequest request) {
+    private void initUser(UserCreateRequest request) {
         this.loginId = request.getLoginId();
         this.nickName = request.getNickName();
         this.name = request.getName();
@@ -77,7 +78,25 @@ public class User extends BaseModel {
         this.userCode = RandomUtil.generateRandomCode(12);
     }
 
+    public void modify(UserModifyRequest request) {
+        this.nickName = request.getNickName();
+        this.name = request.getName();
+        this.profileImg = request.getProfileImg();
+        this.setModifiedAt(LocalDateTime.now());
+    }
+
+    public void modifyPassword(String newPassword){
+        this.password = newPassword;
+    }
+
+    public void delete(){
+        this.isDeleted = Boolean.TRUE;
+        this.setModifiedAt(LocalDateTime.now());
+    }
+
     public void generateSequence(Long userId){
         this.userId = userId;
     }
+
+
 }

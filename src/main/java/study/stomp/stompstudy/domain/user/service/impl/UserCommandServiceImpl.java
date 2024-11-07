@@ -5,12 +5,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import study.stomp.stompstudy.domain.user.domain.User;
-import study.stomp.stompstudy.domain.user.dto.request.UserCreateRequest;
+import study.stomp.stompstudy.domain.user.dto.request.*;
 import study.stomp.stompstudy.domain.user.dto.response.UserInfoResponse;
 import study.stomp.stompstudy.domain.user.exception.UserException;
 import study.stomp.stompstudy.domain.user.repository.UserRepository;
 import study.stomp.stompstudy.domain.user.service.UserCommandService;
 import study.stomp.stompstudy.global.exception.Code;
+import study.stomp.stompstudy.global.utils.RandomUtil;
 import study.stomp.stompstudy.global.utils.SequenceGenerator;
 
 import java.util.List;
@@ -26,15 +27,29 @@ public class UserCommandServiceImpl implements UserCommandService {
 
     @Override
     public UserInfoResponse save(UserCreateRequest request) {
-        validateLoginId(request.getLoginId());
+        existsLoginId(request.getLoginId());
 
         request.modifyPassword(passwordEncoder.encode(request.getPassword()));
         User user = User.from(request);
         user.generateSequence(sequenceGenerator.generateSequence(User.SEQUENCE_NAME));
 
-        userRepository.save(user);
+        return UserInfoResponse.from(userRepository.save(user));
+    }
 
-        return UserInfoResponse.from(user);
+    @Override
+    public UserInfoResponse modify(UserModifyRequest request) {
+        User user = validateUser(request.getUserId());
+
+        user.modify(request);
+
+        return UserInfoResponse.from(userRepository.save(user));
+    }
+
+    @Override
+    public void delete(UserDeleteRequest request) {
+        User user = validateUser(request.getUserId());
+        user.delete();
+        userRepository.save(user);
     }
 
     @Override
@@ -43,6 +58,30 @@ public class UserCommandServiceImpl implements UserCommandService {
             addChatRoomToUser(userCode, chatId);
         }
 
+    }
+
+    @Override
+    public void modifyPassword(UserPwModifyRequest request) {
+        User user = validateLoginId(request.getLoginId());
+
+        if(passwordEncoder.matches(request.getOldPassword(), user.getPassword()))
+            user.modifyPassword(passwordEncoder.encode(request.getNewPassword()));
+        else
+            throw new UserException(Code.VALIDATION_ERROR, "User Password Not Match");
+
+        userRepository.save(user);
+    }
+
+    @Override
+    public String lostPassword(UserPwLostRequest request) {
+        User user = validateLoginId(request.getLoginId());
+
+        String newPassword = RandomUtil.generateRandomCode(12);
+        user.modifyPassword(passwordEncoder.encode(newPassword));
+
+        userRepository.save(user);
+
+        return newPassword;
     }
 
     private void addChatRoomToUser(String userCode, Long chatId){
@@ -55,8 +94,18 @@ public class UserCommandServiceImpl implements UserCommandService {
     }
 
 
-    private void validateLoginId(String loginId) {
+    private void existsLoginId(String loginId) {
         if(userRepository.existsByLoginIdAndIsDeletedFalse(loginId))
             throw new UserException(Code.VALIDATION_ERROR, "User LoginId 중복");
+    }
+
+    private User validateLoginId(String loginId) {
+        return userRepository.findByLoginId(loginId)
+                .orElseThrow(() -> new UserException(Code.NOT_FOUND, "User Not Found"));
+    }
+
+    private User validateUser(Long userId) {
+        return userRepository.findByUserId(userId)
+                .orElseThrow(() -> new UserException(Code.NOT_FOUND, "User Not Found"));
     }
 }

@@ -17,12 +17,15 @@ public class UserInfoResponse {
 
     private String profileImg;
 
+    private String userCode;
+
     public static UserInfoResponse from(User user){
         return UserInfoResponse.builder()
                 .userId(user.getUserId())
                 .nickName(user.getNickName())
                 .name(user.getName())
                 .profileImg(user.getProfileImg())
+                .userCode(user.getUserCode())
                 .build();
     }
 }

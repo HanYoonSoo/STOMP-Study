@@ -31,12 +31,12 @@ public class Normal extends BaseModel {
     public static Normal from(NormalCreateRequest request) {
         Normal normal = new Normal();
 
-        normal.modifyNormal(request);
+        normal.initNormal(request);
 
         return normal;
     }
 
-    private void modifyNormal(NormalCreateRequest request){
+    private void initNormal(NormalCreateRequest request){
         this.normalChatName = request.getNormalChatName();
         this.userCodes = request.getUserCodes();
     }

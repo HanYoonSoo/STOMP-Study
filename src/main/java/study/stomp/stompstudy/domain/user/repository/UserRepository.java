@@ -10,6 +10,9 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends MongoRepository<User, Long> {
 
+    @Query("{'userId': ?0, 'isDeleted': false}")
+    Optional<User> findByUserId(Long userId);
+
     @Query("{'loginId': ?0, 'isDeleted': false}")
     Optional<User> findByLoginId(String loginId);
 
