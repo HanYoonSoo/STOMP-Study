@@ -3,6 +3,7 @@ package study.stomp.stompstudy.domain.user.domain;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -10,6 +11,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import study.stomp.stompstudy.domain.model.BaseModel;
 import study.stomp.stompstudy.domain.model.RoleType;
+import study.stomp.stompstudy.domain.normal.domain.Normal;
 import study.stomp.stompstudy.domain.user.dto.request.UserCreateRequest;
 import study.stomp.stompstudy.domain.user.dto.request.UserModifyRequest;
 import study.stomp.stompstudy.global.utils.RandomUtil;
@@ -99,4 +101,8 @@ public class User extends BaseModel {
     }
 
 
+    public void addChat(Normal normal) {
+        this.getChatIds().add(normal.getNormalId());
+        normal.getUserIds().add(this.getUserId());
+    }
 }

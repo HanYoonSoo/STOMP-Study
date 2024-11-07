@@ -46,4 +46,10 @@ public class UserCommandController {
         String response = userCommandService.lostPassword(request);
         return DataResponseDto.from(response);
     }
+
+    @PatchMapping("/exit/chat")
+    public DataResponseDto exitChatRoom(@Valid @RequestBody UserExitRequest request){
+        userCommandService.exitChatRoom(request);
+        return DataResponseDto.from("Exit chat room success");
+    }
 }

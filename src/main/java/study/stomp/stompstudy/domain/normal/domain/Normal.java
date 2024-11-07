@@ -26,7 +26,10 @@ public class Normal extends BaseModel {
     private String normalChatName;
 
     @Field
-    private List<String> userCodes = new ArrayList<>();
+    private List<Long> userIds = new ArrayList<>();
+
+    @Field
+    private Boolean isDeleted = Boolean.FALSE;
 
     public static Normal from(NormalCreateRequest request) {
         Normal normal = new Normal();
@@ -38,7 +41,6 @@ public class Normal extends BaseModel {
 
     private void initNormal(NormalCreateRequest request){
         this.normalChatName = request.getNormalChatName();
-        this.userCodes = request.getUserCodes();
     }
 
     public void generateSequence(Long normalId){

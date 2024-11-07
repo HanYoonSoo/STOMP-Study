@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import study.stomp.stompstudy.domain.normal.domain.Normal;
 import study.stomp.stompstudy.domain.user.domain.User;
 import study.stomp.stompstudy.domain.user.dto.request.*;
 import study.stomp.stompstudy.domain.user.dto.response.UserInfoResponse;
@@ -53,14 +54,6 @@ public class UserCommandServiceImpl implements UserCommandService {
     }
 
     @Override
-    public void addChatRoom(List<String> userCodes, Long chatId) {
-        for(String userCode : userCodes){
-            addChatRoomToUser(userCode, chatId);
-        }
-
-    }
-
-    @Override
     public void modifyPassword(UserPwModifyRequest request) {
         User user = validateLoginId(request.getLoginId());
 
@@ -84,14 +77,22 @@ public class UserCommandServiceImpl implements UserCommandService {
         return newPassword;
     }
 
-    private void addChatRoomToUser(String userCode, Long chatId){
-        User user = userRepository.findByUserCode(userCode)
-                .orElseThrow(() -> new UserException(Code.NOT_FOUND, "UserCode Not Found"));
-
-        user.getChatIds().add(chatId);
-
-        userRepository.save(user);
+    @Override
+    public void exitChatRoom(UserExitRequest request) {
+        User user = validateUser(request.getUserId());
+        user.getChatIds().removeAll(request.getChatIds());
     }
+
+    @Override
+    public void addChatRoom(List<String> userCodes, Normal normal) {
+        List<User> users = userRepository.findAllByUserCodes(userCodes);
+
+        for(User user : users){
+            user.addChat(normal);
+            userRepository.save(user);
+        }
+    }
+
 
 
     private void existsLoginId(String loginId) {

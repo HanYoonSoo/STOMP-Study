@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import study.stomp.stompstudy.domain.user.dto.response.UserChatListResponse;
 import study.stomp.stompstudy.domain.user.dto.response.UserInfoResponse;
 import study.stomp.stompstudy.domain.user.service.UserQueryService;
 import study.stomp.stompstudy.global.common.dto.response.DataResponseDto;
@@ -26,6 +27,13 @@ public class UserQueryController {
     @GetMapping("/code/{userId}")
     public DataResponseDto readUserCode(@PathVariable("userId") Long userId){
         String response = userQueryService.getUserCode(userId);
+
+        return DataResponseDto.from(response);
+    }
+
+    @GetMapping("/chat/{userId}")
+    public DataResponseDto readUserChatList(@PathVariable("userId") Long userId) {
+        UserChatListResponse response = userQueryService.readUserChatList(userId);
 
         return DataResponseDto.from(response);
     }

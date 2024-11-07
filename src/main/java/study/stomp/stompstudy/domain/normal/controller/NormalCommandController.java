@@ -2,10 +2,8 @@ package study.stomp.stompstudy.domain.normal.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import study.stomp.stompstudy.domain.normal.dto.request.NormalAddUserRequest;
 import study.stomp.stompstudy.domain.normal.dto.request.NormalCreateRequest;
 import study.stomp.stompstudy.domain.normal.dto.response.NormalInfoResponse;
 import study.stomp.stompstudy.domain.normal.service.NormalCommandService;
@@ -23,5 +21,12 @@ public class NormalCommandController {
         NormalInfoResponse response = normalCommandService.save(request);
 
         return DataResponseDto.from(response);
+    }
+
+    @PatchMapping("/user")
+    public DataResponseDto addUser(@Valid @RequestBody NormalAddUserRequest request){
+        normalCommandService.addUser(request);
+
+        return DataResponseDto.from("Add user success");
     }
 }

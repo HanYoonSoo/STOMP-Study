@@ -11,15 +11,13 @@ import java.util.List;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class NormalInfoResponse {
 
+    private Long normalId;
     private String normalChatName;
-
-    private List<String> userIds;
-
 
     public static NormalInfoResponse from(Normal normal) {
         return NormalInfoResponse.builder()
+                .normalId(normal.getNormalId())
                 .normalChatName(normal.getNormalChatName())
-                .userIds(normal.getUserCodes())
                 .build();
     }
 }

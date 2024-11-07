@@ -14,6 +14,7 @@ public class LoginResponse{
     private String loginId;
     private String nickName;
     private String profileImg;
+    private String userCode;
 
     public static LoginResponse from(CustomUserDetails customUserDetails){
         return LoginResponse.builder()
@@ -21,6 +22,7 @@ public class LoginResponse{
                 .loginId(customUserDetails.getLoginId())
                 .nickName(customUserDetails.getNickName())
                 .profileImg(customUserDetails.getProfileImg())
+                .userCode(customUserDetails.getUserCode())
                 .build();
     }
 }

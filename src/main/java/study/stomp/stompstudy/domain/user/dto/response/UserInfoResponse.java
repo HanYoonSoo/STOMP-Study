@@ -11,6 +11,8 @@ public class UserInfoResponse {
 
     private Long userId;
 
+    private String loginId;
+
     private String nickName;
 
     private String name;
@@ -22,6 +24,7 @@ public class UserInfoResponse {
     public static UserInfoResponse from(User user){
         return UserInfoResponse.builder()
                 .userId(user.getUserId())
+                .loginId(user.getLoginId())
                 .nickName(user.getNickName())
                 .name(user.getName())
                 .profileImg(user.getProfileImg())
