@@ -5,7 +5,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import study.stomp.stompstudy.domain.message.normal.domain.NormalMessage;
 import study.stomp.stompstudy.domain.message.normal.dto.event.NormalChatCreateEvent;
+import study.stomp.stompstudy.domain.message.normal.dto.event.NormalChatDeleteEvent;
+import study.stomp.stompstudy.domain.message.normal.dto.event.NormalChatModifyEvent;
 import study.stomp.stompstudy.domain.message.normal.dto.request.NormalMessageCreateRequest;
+import study.stomp.stompstudy.domain.message.normal.dto.request.NormalMessageDeleteRequest;
+import study.stomp.stompstudy.domain.message.normal.dto.request.NormalMessageModifyRequest;
 import study.stomp.stompstudy.domain.message.normal.exception.NormalChatException;
 import study.stomp.stompstudy.domain.message.normal.repository.NormalMessageRepository;
 import study.stomp.stompstudy.domain.message.normal.service.NormalMessageCommandService;
@@ -38,6 +42,33 @@ public class NormalMessageCommandServiceImpl implements NormalMessageCommandServ
 
         Events.send(chatCreateEvent);
     }
+
+    @Override
+    public void modify(NormalMessageModifyRequest request) {
+        NormalMessage normalMessage = messageRepository.findById(request.getMessageId())
+                .orElseThrow(() -> new NormalChatException(Code.NOT_FOUND, "Message Not Found"));
+
+        normalMessage.modify(request.getContent());
+
+        NormalChatModifyEvent chatModifyEvent =
+                NormalChatModifyEvent.from(messageRepository.save(normalMessage), UUIDUtil.generateUUID());
+
+        Events.send(chatModifyEvent);
+    }
+
+    @Override
+    public void delete(NormalMessageDeleteRequest request) {
+        NormalMessage normalMessage = messageRepository.findById(request.getMessageId())
+                .orElseThrow(() -> new NormalChatException(Code.NOT_FOUND, "Message Not Found"));
+
+        normalMessage.delete();
+
+        NormalChatDeleteEvent chatDeleteEvent =
+                NormalChatDeleteEvent.from(messageRepository.save(normalMessage), UUIDUtil.generateUUID());
+
+        Events.send(chatDeleteEvent);
+    }
+
 
     private void validateUserInNormal(Long normalId, Long userId){
         normalRepository.findByNormalIdAndInUserId(normalId, List.of(userId))

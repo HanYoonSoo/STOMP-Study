@@ -6,6 +6,8 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Component;
 import study.stomp.stompstudy.domain.message.normal.dto.response.NormalMessageCreateResponse;
+import study.stomp.stompstudy.domain.message.normal.dto.response.NormalMessageDeleteResponse;
+import study.stomp.stompstudy.domain.message.normal.dto.response.NormalMessageModifyResponse;
 import study.stomp.stompstudy.global.common.dto.response.DataResponseDto;
 import study.stomp.stompstudy.infra.kafka.producer.chat.event.NormalChatEvent;
 
@@ -20,11 +22,19 @@ public class NormalChatConsumer {
     public void normalChatListener(NormalChatEvent chatEvent) {
         Long normalId = chatEvent.getNormalId();
 
-        System.out.println(normalId);
-
         switch (chatEvent.getActionType()){
             case SEND -> {
                 NormalMessageCreateResponse response = NormalMessageCreateResponse.from(chatEvent);
+                messagingTemplate.convertAndSend("/topic/normal/" + normalId, DataResponseDto.from(response));
+            }
+
+            case MODIFY -> {
+                NormalMessageModifyResponse response = NormalMessageModifyResponse.from(chatEvent);
+                messagingTemplate.convertAndSend("/topic/normal/" + normalId, DataResponseDto.from(response));
+            }
+
+            case DELETE -> {
+                NormalMessageDeleteResponse response = NormalMessageDeleteResponse.from(chatEvent);
                 messagingTemplate.convertAndSend("/topic/normal/" + normalId, DataResponseDto.from(response));
             }
         }

@@ -7,6 +7,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import study.stomp.stompstudy.domain.file.domain.UploadFile;
 import study.stomp.stompstudy.domain.message.normal.dto.NormalMessageDto;
 import study.stomp.stompstudy.domain.message.normal.dto.event.NormalChatCreateEvent;
+import study.stomp.stompstudy.domain.message.normal.dto.event.NormalChatDeleteEvent;
+import study.stomp.stompstudy.domain.message.normal.dto.event.NormalChatModifyEvent;
 import study.stomp.stompstudy.domain.model.ActionType;
 import study.stomp.stompstudy.domain.model.ChatType;
 
@@ -61,6 +63,28 @@ public class NormalChatEvent {
                 .files(message.getFiles())
                 .createdAt(message.getCreatedAt())
                 .modifiedAt(message.getModifiedAt())
+                .eventSentType(eventSentType)
+                .build();
+    }
+
+    public static NormalChatEvent from(NormalChatModifyEvent message, EventSentType eventSentType) {
+        return NormalChatEvent.builder()
+                .uuid(message.getUuid())
+                .messageId(message.getMessageId())
+                .normalId(message.getNormalId())
+                .content(message.getContent())
+                .actionType(message.getActionType())
+                .createdAt(message.getCreatedAt())
+                .modifiedAt(message.getModifiedAt())
+                .eventSentType(eventSentType)
+                .build();
+    }
+
+    public static NormalChatEvent from(NormalChatDeleteEvent message, EventSentType eventSentType) {
+        return NormalChatEvent.builder()
+                .uuid(message.getUuid())
+                .messageId(message.getMessageId())
+                .actionType(message.getActionType())
                 .eventSentType(eventSentType)
                 .build();
     }

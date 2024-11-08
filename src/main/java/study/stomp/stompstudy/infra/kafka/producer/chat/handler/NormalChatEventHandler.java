@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
 import study.stomp.stompstudy.domain.message.normal.dto.event.NormalChatCreateEvent;
+import study.stomp.stompstudy.domain.message.normal.dto.event.NormalChatDeleteEvent;
+import study.stomp.stompstudy.domain.message.normal.dto.event.NormalChatModifyEvent;
 import study.stomp.stompstudy.global.utils.SequenceGenerator;
 import study.stomp.stompstudy.infra.kafka.producer.chat.ChatEventProducer;
 import study.stomp.stompstudy.infra.kafka.producer.chat.event.EventSentType;
@@ -38,6 +40,36 @@ public class NormalChatEventHandler {
         publishNormalChatEvent(normalChatEvent);
     }
 
+    @TransactionalEventListener(classes = NormalChatModifyEvent.class, phase = TransactionPhase.BEFORE_COMMIT)
+    public void normalChatModifyEventBeforeHandler(NormalChatModifyEvent chatModifyEvent){
+        NormalChatEvent normalChatEvent = createNormalChatEvent(chatModifyEvent);
+        normalChatEvent.generateSequence(sequenceGenerator.generateSequence(NormalChatEvent.SEQUENCE_NAME));
+        normalChatEventRepository.save(normalChatEvent);
+    }
+
+    @Async
+    @Retryable(retryFor = {Exception.class}, maxAttempts = 3, backoff = @Backoff(delay = 2000L))
+    @TransactionalEventListener(classes = NormalChatModifyEvent.class, phase = TransactionPhase.AFTER_COMMIT)
+    public void normalChatModifyEventAfterHandler(NormalChatModifyEvent chatModifyEvent){
+        NormalChatEvent normalChatEvent = createNormalChatEvent(chatModifyEvent);
+        publishNormalChatEvent(normalChatEvent);
+    }
+
+    @TransactionalEventListener(classes = NormalChatDeleteEvent.class, phase = TransactionPhase.BEFORE_COMMIT)
+    public void normalChatDeleteEventBeforeHandler(NormalChatDeleteEvent chatDeleteEvent){
+        NormalChatEvent normalChatEvent = createNormalChatEvent(chatDeleteEvent);
+        normalChatEvent.generateSequence(sequenceGenerator.generateSequence(NormalChatEvent.SEQUENCE_NAME));
+        normalChatEventRepository.save(normalChatEvent);
+    }
+
+    @Async
+    @Retryable(retryFor = {Exception.class}, maxAttempts = 3, backoff = @Backoff(delay = 2000L))
+    @TransactionalEventListener(classes = NormalChatDeleteEvent.class, phase = TransactionPhase.AFTER_COMMIT)
+    public void normalChatDeleteEventAfterHandler(NormalChatDeleteEvent chatDeleteEvent){
+        NormalChatEvent normalChatEvent = createNormalChatEvent(chatDeleteEvent);
+        publishNormalChatEvent(normalChatEvent);
+    }
+
     private void publishNormalChatEvent(NormalChatEvent normalChatEvent) {
         NormalChatEvent chatEvent = normalChatEventRepository.findByUuid(normalChatEvent.getUuid())
                 .orElseThrow(() -> new RuntimeException("Normal Chat Event Not Found"));
@@ -54,6 +86,14 @@ public class NormalChatEventHandler {
 
     private NormalChatEvent createNormalChatEvent(NormalChatCreateEvent chatCreateEvent) {
         return NormalChatEvent.from(chatCreateEvent, EventSentType.INIT);
+    }
+
+    private NormalChatEvent createNormalChatEvent(NormalChatModifyEvent chatModifyEvent) {
+        return NormalChatEvent.from(chatModifyEvent, EventSentType.INIT);
+    }
+
+    private NormalChatEvent createNormalChatEvent(NormalChatDeleteEvent chatDeleteEvent) {
+        return NormalChatEvent.from(chatDeleteEvent, EventSentType.INIT);
     }
 
 }

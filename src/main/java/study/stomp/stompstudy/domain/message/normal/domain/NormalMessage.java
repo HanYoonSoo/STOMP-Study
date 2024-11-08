@@ -13,6 +13,7 @@ import study.stomp.stompstudy.domain.model.ActionType;
 import study.stomp.stompstudy.domain.model.BaseModel;
 import study.stomp.stompstudy.domain.model.ChatType;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -74,5 +75,16 @@ public class NormalMessage extends BaseModel {
 
     public void generateSequence(Long messageId){
         this.messageId = messageId;
+    }
+
+    public void modify(String content) {
+        this.content = content;
+        this.actionType = ActionType.MODIFY;
+        this.setModifiedAt(LocalDateTime.now());
+    }
+
+    public void delete() {
+        this.isDeleted = Boolean.TRUE;
+        this.setModifiedAt(LocalDateTime.now());
     }
 }
