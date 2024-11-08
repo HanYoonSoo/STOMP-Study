@@ -99,7 +99,7 @@ public class JwtProvider {
     }
 
     // 토큰 정보 검증
-    public boolean validateToken(String token) throws IOException {
+    public boolean validateToken(String token){
         try{
             Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token);
             return true;

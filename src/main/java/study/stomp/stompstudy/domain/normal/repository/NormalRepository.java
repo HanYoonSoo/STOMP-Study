@@ -5,6 +5,7 @@ import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
 import study.stomp.stompstudy.domain.normal.domain.Normal;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -14,5 +15,5 @@ public interface NormalRepository extends MongoRepository<Normal, Long> {
     Optional<Normal> findByNormalId(Long normalId);
 
     @Query("{'normalId': ?0, 'userIds':  {$in : ?1}, 'isDeleted': false}")
-    Optional<Normal> findByNormalIdAndInUserId(Long normalId, Long userId);
+    Optional<Normal> findByNormalIdAndInUserId(Long normalId, List<Long> userId);
 }

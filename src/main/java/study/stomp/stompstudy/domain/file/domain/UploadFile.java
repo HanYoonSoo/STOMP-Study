@@ -14,8 +14,4 @@ public class UploadFile {
     private String storeFileName;
     private String originalFilename;
 
-    public UploadFile(String storeFileName, String originalFilename) {
-        this.storeFileName = storeFileName;
-        this.originalFilename = originalFilename;
-    }
 }

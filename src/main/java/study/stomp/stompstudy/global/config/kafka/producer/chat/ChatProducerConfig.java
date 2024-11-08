@@ -6,8 +6,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafka;
+import org.springframework.kafka.core.DefaultKafkaProducerFactory;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.support.serializer.JsonSerializer;
+import study.stomp.stompstudy.infra.kafka.producer.chat.event.NormalChatEvent;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,5 +32,14 @@ public class ChatProducerConfig {
         return config;
     }
 
+    @Bean
+    public ProducerFactory<String, NormalChatEvent> normalChatEventProducerFactory(){
+        return new DefaultKafkaProducerFactory<>(chatEventProducerConfig());
+    }
+
+    @Bean
+    public KafkaTemplate<String, NormalChatEvent> normalChatKafkaTemplate(){
+        return new KafkaTemplate<>(normalChatEventProducerFactory());
+    }
 
 }

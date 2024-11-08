@@ -15,3 +15,11 @@ public class NormalMessageCreateRequest {
     private String content;
     private List<UploadFile> files;
 }
+
+//{
+//    "normalId": 7,
+//    "userId" : 15,
+//    "profileImg" : "https://www.naver.com",
+//    "writer" : "test",
+//    "content" : "hello"
+//}

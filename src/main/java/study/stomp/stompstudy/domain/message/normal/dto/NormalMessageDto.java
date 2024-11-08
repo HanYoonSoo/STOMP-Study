@@ -15,6 +15,7 @@ import java.util.List;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class NormalMessageDto {
 
+    private String uuid;
     private Long messageId;
     private Long normalId;
     private Long userId;
@@ -27,8 +28,9 @@ public class NormalMessageDto {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
-    public static NormalMessageDto from(NormalMessage normalMessage) {
+    public static NormalMessageDto from(NormalMessage normalMessage, String uuid) {
         return NormalMessageDto.builder()
+                .uuid(uuid)
                 .messageId(normalMessage.getMessageId())
                 .normalId(normalMessage.getNormalId())
                 .userId(normalMessage.getUserId())

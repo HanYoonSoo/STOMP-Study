@@ -2,9 +2,12 @@ package study.stomp.stompstudy.global.exception.handler;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.messaging.handler.annotation.MessageExceptionHandler;
+import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import study.stomp.stompstudy.domain.message.normal.exception.NormalChatException;
 import study.stomp.stompstudy.domain.user.exception.UserException;
 import study.stomp.stompstudy.global.common.dto.response.ErrorResponseDto;
 import study.stomp.stompstudy.global.exception.Code;
@@ -44,5 +47,12 @@ public class StompExceptionHandler {
     public ErrorResponseDto handleIOException(IOException e) {
         log.error("IOException: {}", e.getMessage());
         return ErrorResponseDto.of(Code.IO_ERROR, "IO Error");
+    }
+
+    @MessageExceptionHandler(NormalChatException.class)
+    @SendToUser(destinations = "/queue/errors", broadcast = false)
+    public ErrorResponseDto normalChatExceptionHandler(NormalChatException e) {
+        log.error("NormalChatException: {}, detail: {}", e.getErrorCode().getMessage(), e.getMessage());
+        return ErrorResponseDto.of(e.getErrorCode(), e.getMessage());
     }
 }
