@@ -1,6 +1,7 @@
 package study.stomp.stompstudy.domain.message.normal.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import study.stomp.stompstudy.domain.message.normal.domain.NormalMessage;
@@ -21,6 +22,7 @@ import study.stomp.stompstudy.global.utils.UUIDUtil;
 
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class NormalMessageCommandServiceImpl implements NormalMessageCommandService {
@@ -44,11 +46,14 @@ public class NormalMessageCommandServiceImpl implements NormalMessageCommandServ
     }
 
     @Override
+    @Transactional
     public void modify(NormalMessageModifyRequest request) {
         NormalMessage normalMessage = messageRepository.findById(request.getMessageId())
                 .orElseThrow(() -> new NormalChatException(Code.NOT_FOUND, "Message Not Found"));
 
         normalMessage.modify(request.getContent());
+
+//        System.out.println(request.getContent());
 
         NormalChatModifyEvent chatModifyEvent =
                 NormalChatModifyEvent.from(messageRepository.save(normalMessage), UUIDUtil.generateUUID());
@@ -57,6 +62,7 @@ public class NormalMessageCommandServiceImpl implements NormalMessageCommandServ
     }
 
     @Override
+    @Transactional
     public void delete(NormalMessageDeleteRequest request) {
         NormalMessage normalMessage = messageRepository.findById(request.getMessageId())
                 .orElseThrow(() -> new NormalChatException(Code.NOT_FOUND, "Message Not Found"));

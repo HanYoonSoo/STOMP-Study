@@ -71,6 +71,8 @@ public class NormalMessage extends BaseModel {
         this.chatType = ChatType.NORMAL;
         this.actionType = ActionType.SEND;
         this.files = request.getFiles();
+        this.setCreatedAt(LocalDateTime.now());
+        this.setModifiedAt(LocalDateTime.now());
     }
 
     public void generateSequence(Long messageId){

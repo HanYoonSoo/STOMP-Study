@@ -45,10 +45,7 @@ public class AuthenticationChannelInterceptor implements ChannelInterceptor {
                     headerAccessor.getFirstNativeHeader(JwtProvider.AUTHORIZATION_HEADER));
 
             if(!jwtProvider.validateToken(accessToken)){
-                System.out.println("11111111");
                 throw new JwtException(Code.UNAUTHORIZED, "Jwt Token Error");
-            } else{
-                System.out.println(2222222);
             }
         }
     }
