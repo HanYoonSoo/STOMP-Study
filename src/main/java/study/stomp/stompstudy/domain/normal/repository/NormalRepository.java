@@ -12,4 +12,7 @@ public interface NormalRepository extends MongoRepository<Normal, Long> {
 
     @Query("{'normalId': ?0, 'isDeleted': false}")
     Optional<Normal> findByNormalId(Long normalId);
+
+    @Query("{'normalId': ?0, 'userIds':  {$in : ?1}, 'isDeleted': false}")
+    Optional<Normal> findByNormalIdAndInUserId(Long normalId, Long userId);
 }
