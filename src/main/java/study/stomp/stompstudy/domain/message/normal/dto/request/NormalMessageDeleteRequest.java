@@ -9,5 +9,6 @@ import lombok.*;
 public class NormalMessageDeleteRequest {
 
     private Long normalId;
+    private Long userId;
     private Long messageId;
 }

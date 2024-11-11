@@ -48,6 +48,8 @@ public class NormalMessageCommandServiceImpl implements NormalMessageCommandServ
     @Override
     @Transactional
     public void modify(NormalMessageModifyRequest request) {
+        validateUserInNormal(request.getNormalId(), request.getUserId());
+
         NormalMessage normalMessage = messageRepository.findById(request.getMessageId())
                 .orElseThrow(() -> new NormalChatException(Code.NOT_FOUND, "Message Not Found"));
 
@@ -64,6 +66,7 @@ public class NormalMessageCommandServiceImpl implements NormalMessageCommandServ
     @Override
     @Transactional
     public void delete(NormalMessageDeleteRequest request) {
+        validateUserInNormal(request.getNormalId(), request.getUserId());
         NormalMessage normalMessage = messageRepository.findById(request.getMessageId())
                 .orElseThrow(() -> new NormalChatException(Code.NOT_FOUND, "Message Not Found"));
 

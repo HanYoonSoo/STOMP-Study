@@ -10,6 +10,7 @@ import study.stomp.stompstudy.domain.model.BaseModel;
 import study.stomp.stompstudy.domain.normal.dto.request.NormalCreateRequest;
 import study.stomp.stompstudy.domain.user.domain.User;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,11 +43,14 @@ public class Normal extends BaseModel {
 
     private void initNormal(NormalCreateRequest request){
         this.normalChatName = request.getNormalChatName();
+        this.setCreatedAt(LocalDateTime.now());
+        this.setModifiedAt(LocalDateTime.now());
     }
 
 
     public void modifyChatName(String normalChatName) {
         this.normalChatName = normalChatName;
+        this.setModifiedAt(LocalDateTime.now());
     }
 
     public void generateSequence(Long normalId){

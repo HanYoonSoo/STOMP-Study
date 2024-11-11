@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 public class NormalMessageModifyRequest {
 
     private Long normalId;
+    private Long userId;
     private Long messageId;
     private String content;
 }
