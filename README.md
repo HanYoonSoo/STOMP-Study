@@ -29,3 +29,18 @@
 
 ### 채팅 프로젝트에 Kafka 적용
 <https://hdbstn3055.tistory.com/303>
+
+### MongoDB Collection 설계 With Auto-Increment Sequence
+<https://hdbstn3055.tistory.com/304>
+
+### Spring Security + STOMP
+<https://hdbstn3055.tistory.com/306>
+
+### STOMP에서의 예외처리
+<https://hdbstn3055.tistory.com/307>
+
+### STOMP에서 Kafka 활용 Flow
+<https://hdbstn3055.tistory.com/308>
+
+### 채팅 서비스에 Transactional Outbox Pattern 도입
+<https://hdbstn3055.tistory.com/309>
